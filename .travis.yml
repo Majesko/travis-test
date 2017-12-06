@@ -3,21 +3,28 @@ language: php
 php:
   - "7.1"
 
-before_script:
-  - cp .env.travis .env
-  - mysql -e 'create database homestead_test;'
-  - composer self-update
-  - composer install --no-interaction
-  - php artisan key:generate
-
-services:
-  - mysql
-
 jobs:
   include:
     - stage: test
+      services:
+        - mysql
+      before_script:
+        - cp .env.travis .env
+        - curl -LO https://s3-eu-west-1.amazonaws.com/aplus.travis/dump-13-07-17.sql
+        - curl -LO https://s3-eu-west-1.amazonaws.com/aplus.travis/workingDays.json
+        - mv workingDays.json ./storage/app/
+        - mysql -e 'create database homestead_test;'
+        - mysql -u root -p insurance_test < dump-13-07-17.sql
+        - composer self-update
+        - composer install --no-interaction
+        - php artisan key:generate
       script:
         - vendor/bin/phpunit
     - stage: codestyle
+      before_script:
+        curl -LO https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+        curl -LO https://s3-eu-west-1.amazonaws.com/aplus.travis/aplus-cs.zip
+        unzip aplus-cs.zip -d aplus
+        php phpcs.phar --config-set installed_paths ./
       script:
-        - sh hello.sh
+        - php phpcs.phar
