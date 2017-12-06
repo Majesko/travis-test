@@ -13,5 +13,11 @@ before_script:
 services:
   - mysql
 
-script:
-- vendor/bin/phpunit
+jobs:
+  include:
+    - stage: test
+      script:
+        - vendor/bin/phpunit
+    - stage: codestyle
+      script:
+        - sh hello.sh
