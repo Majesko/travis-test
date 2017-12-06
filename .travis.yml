@@ -14,7 +14,7 @@ jobs:
         - curl -LO https://s3-eu-west-1.amazonaws.com/aplus.travis/workingDays.json
         - mv workingDays.json ./storage/app/
         - mysql -e 'create database homestead_test;'
-        - mysql -u root -p insurance_test < dump-13-07-17.sql
+        - mysql -u root insurance_test < dump-13-07-17.sql
         - composer self-update
         - composer install --no-interaction
         - php artisan key:generate
