@@ -24,7 +24,7 @@ jobs:
       before_script:
         - curl -LO https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
         - curl -LO https://s3-eu-west-1.amazonaws.com/aplus.travis/aplus-cs.zip
-        - unzip aplus-cs.zip -d ./Aplus
-        - php phpcs.phar --config-set installed_paths $PWD/Aplus
+        - unzip aplus-cs.zip -d $TRAVIS_BUILD_DIR/Aplus
+        - php phpcs.phar --config-set installed_paths $TRAVIS_BUILD_DIR/Aplus
       script:
         - php phpcs.phar --standard=Aplus ./
