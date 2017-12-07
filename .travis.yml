@@ -22,6 +22,8 @@ jobs:
         - vendor/bin/phpunit
     - stage: codestyle
       before_script:
+        - composer self-update
+        - composer install --no-interaction
         - curl -LO https://s3-eu-west-1.amazonaws.com/aplus.travis/aplus-cs.zip
         - unzip aplus-cs.zip -d $TRAVIS_BUILD_DIR/Aplus
         - php vendor/bin/phpcs --config-set installed_paths $TRAVIS_BUILD_DIR/Aplus
